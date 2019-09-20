@@ -82,3 +82,63 @@ return productCount;
     return (product.id,product.name,product.color,product.status);
 }
 }
+
+______________________________________________________________________________________________________________________________
+
+
+pragma solidity ^0.5.11;
+contract ProductSmart{
+uint256 public productCount=0;
+
+  struct Product{
+        uint id;
+        
+         
+         string name;
+         address owner;
+         string color;
+        string status;
+    } 
+ 
+mapping(uint=>Product) public productid;
+Product[] public products;
+
+event ProductCreated(uint id,string name,string color);
+event OwnershipChange(uint id, address indexed newOwner);
+
+
+
+
+function addProduct(uint idx,uint id,string memory name,address owner,string memory color,string memory status) public payable {
+   productid[id]=Product(id,name,owner,color,status);
+   productid[idx]= Product(id,name,owner,color,status);
+    
+  productCount ++;
+
+}
+function changeProductOwner( uint id,address owner,address newOwner)  public payable{
+  
+ owner= newOwner;
+ emit OwnershipChange(id , newOwner);
+}
+
+function getProductById(uint id) public view returns (string memory ,string memory ,string memory) {
+    
+    Product storage p= productid[id];
+  
+    return(p.name,p.color,p.status);
+}
+
+      function getPos(uint idx) external view returns (uint,string memory,string memory,string memory) {
+    Product storage product = productid[idx];
+    return (product.id,product.name,product.color,product.status);
+}
+  function getProductCount() external view returns (uint) { 
+
+ 
+return productCount;
+
+}
+
+}
+
