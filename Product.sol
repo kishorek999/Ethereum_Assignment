@@ -109,9 +109,16 @@ event OwnershipChange(uint id, address indexed newOwner);
 
 
 
-function addProduct(uint idx,uint id,string memory name,address owner,string memory color,string memory status) public payable {
+function addProduct(uint id,string memory name,address owner,string memory color,string memory status) public payable {
    productid[id]=Product(id,name,owner,color,status);
-   productid[idx]= Product(id,name,owner,color,status);
+    products.push(Product({
+            id: id,
+            name : name,
+            owner : owner,
+            color:color,
+            status : status
+        }));
+        
     
   productCount ++;
 
@@ -129,8 +136,8 @@ function getProductById(uint id) public view returns (string memory ,string memo
     return(p.name,p.color,p.status);
 }
 
-      function getPos(uint idx) external view returns (uint,string memory,string memory,string memory) {
-    Product storage product = productid[idx];
+     function getPos(uint Position) external view returns (uint,string memory,string memory,string memory) {
+    Product storage product = products[Position];
     return (product.id,product.name,product.color,product.status);
 }
   function getProductCount() external view returns (uint) { 
@@ -141,4 +148,3 @@ return productCount;
 }
 
 }
-
